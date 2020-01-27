@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+ name: monitoring
+ labels:
+   k8s-app: get-hostname
+spec:
+  selector:
+    matchLabels:
+      name: monitoring
+  template:
+    metadata:
+      labels:
+        name: monitoring
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:1.7.6
+        volumeMounts:
+        - name: shared-data
+          mountPath: /usr/share/nginx/html/index.html
+      volumes:
+      - name: shared-data
+        hostPath:
+          path: /etc/hostname
